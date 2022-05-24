@@ -2,6 +2,15 @@ import { Menu } from "./Menu";
 // @ts-ignore
 import Store from "./Store";
 
+// -*************************************************************************-
+
+// STUDENTS
+const addStudent = (name: string, email: string, password: string): void => {
+  // ! I'm not using the 'error'
+  const { message } = Store.storeStudent(name, email, password);
+  console.log(message);
+};
+
 const showStudents = (): void => {
   if (Store.students.length)
     Store.students?.forEach((student) => {
@@ -13,9 +22,12 @@ const showStudents = (): void => {
   else console.log("No hay estudiantes registrados");
 };
 
-const addStudent = (name: string, email: string, password: string): void => {
+// -*************************************************************************-
+
+// MENTORS
+const addMentor = (name: string, email: string, password: string): void => {
   // ! I'm not using the 'error'
-  const { message } = Store.storeStudent(name, email, password);
+  const { message } = Store.storeMentor(name, email, password);
   console.log(message);
 };
 
@@ -32,14 +44,19 @@ const addStudent = (name: string, email: string, password: string): void => {
         process.exit();
 
       case 1:
-        console.log("Falta por implementar la opción: : ", key);
+        addMentor(
+          await menu.getString("Introduce el nombre: "),
+          await menu.getString("Introduce el email: "),
+          await menu.getString("Introduce una contraseña: ")
+        );
         break;
 
       case 2:
-        const name = await menu.getString("Introduce el nombre: ");
-        const email = await menu.getString("Introduce el email: ");
-        const password = await menu.getString("Introduce una contraseña: ");
-        addStudent(name, email, password);
+        addStudent(
+          await menu.getString("Introduce el nombre: "),
+          await menu.getString("Introduce el email: "),
+          await menu.getString("Introduce una contraseña: ")
+        );
         break;
 
       case 3:
@@ -51,7 +68,6 @@ const addStudent = (name: string, email: string, password: string): void => {
         break;
 
       case 5:
-        console.log("Falta por implementar la opción: : ", key);
         break;
 
       case 6:
