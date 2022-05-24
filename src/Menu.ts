@@ -34,7 +34,7 @@ export class Menu {
   #  1) Agregar Mentor                              #
   #  2) Agregar Estudiante                          #
   #  3) Agregar Conferencia                         #
-  #  4) Ver lista de Conferencias                   #
+  #  4) Ver lista de Estudiantes                    #
   #  5) Ver lista de Conferencias por profesores    #
   #  6) Registrarse en una conferencia              #
   #  7) Esta opción es un ejemplo, ¿quieres probar? #

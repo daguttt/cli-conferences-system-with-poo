@@ -1,15 +1,22 @@
 import { Menu } from "./Menu";
-import Store from "./store";
+// @ts-ignore
+import Store from "./Store";
 
-/**
- * puedes borrar este ejemplo para tu entrega final
- */
-const ejemplo = (texto: string, numero: number): void => {
-  console.log(`
-  
-  Haz ingresado el texto: ${texto}  y el número ${numero}
-  
-  `);
+const showStudents = (): void => {
+  if (Store.students.length)
+    Store.students?.forEach((student) => {
+      console.log(`
+            Nombre: ${student.name}
+            Email: ${student.email}
+            `);
+    });
+  else console.log("No hay estudiantes registrados");
+};
+
+const addStudent = (name: string, email: string, password: string): void => {
+  // ! I'm not using the 'error'
+  const { message } = Store.storeStudent(name, email, password);
+  console.log(message);
 };
 
 (async () => {
@@ -32,9 +39,7 @@ const ejemplo = (texto: string, numero: number): void => {
         const name = await menu.getString("Introduce el nombre: ");
         const email = await menu.getString("Introduce el email: ");
         const password = await menu.getString("Introduce una contraseña: ");
-        // ! I'm not using the 'error'
-        const { message } = Store.storeStudent(name, email, password);
-        console.log(message);
+        addStudent(name, email, password);
         break;
 
       case 3:
@@ -42,7 +47,7 @@ const ejemplo = (texto: string, numero: number): void => {
         break;
 
       case 4:
-        console.log("Falta por implementar la opción: : ", key);
+        showStudents();
         break;
 
       case 5:
@@ -54,15 +59,7 @@ const ejemplo = (texto: string, numero: number): void => {
         break;
 
       case 7:
-        /**Buenes borrar este caso para tu entrega final */
-
-        const texto = await menu.getString(
-          "ingresa un texto cualquiera, luego preciona enter"
-        );
-        const numero = await menu.getInt(
-          "ingresa un número, luego preciona enter"
-        );
-        ejemplo(texto, numero);
+        console.log("Falta por implementar la opción: : ", key);
         break;
 
       default:

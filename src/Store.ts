@@ -1,6 +1,9 @@
-import { Conference } from "./conference";
-import { Mentor } from "./mentor";
-import { Student } from "./student";
+// @ts-ignore
+import { Conference } from "./Conference";
+// @ts-ignore
+import { Mentor } from "./Mentor";
+// @ts-ignore
+import { Student } from "./Student";
 import { StoreResponse } from "./interfaces/interfaces";
 
 class Store {
