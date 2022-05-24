@@ -1,10 +1,13 @@
-// @ts-ignore
 import { Conference } from "./Conference";
-// @ts-ignore
 import { Mentor } from "./Mentor";
-// @ts-ignore
+import { Response } from "./Response";
 import { Student } from "./Student";
-import { StoreResponse } from "./interfaces/interfaces";
+
+class StoreResponse extends Response {
+  constructor(error: boolean, message) {
+    super(error, message)
+  }
+}
 
 class Store {
   constructor(
