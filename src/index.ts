@@ -1,4 +1,5 @@
 import { Menu } from "./Menu";
+import Store from "./store";
 
 /**
  * puedes borrar este ejemplo para tu entrega final
@@ -28,7 +29,12 @@ const ejemplo = (texto: string, numero: number): void => {
         break;
 
       case 2:
-        console.log("Falta por implementar la opción: : ", key);
+        const name = await menu.getString("Introduce el nombre: ");
+        const email = await menu.getString("Introduce el email: ");
+        const password = await menu.getString("Introduce una contraseña: ");
+        // ! I'm not using the 'error'
+        const { message } = Store.storeStudent(name, email, password);
+        console.log(message);
         break;
 
       case 3:
