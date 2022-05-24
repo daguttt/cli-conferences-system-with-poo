@@ -23,8 +23,6 @@ const ejemplo = (texto: string, numero: number): void => {
         menu.close();
         process.exit();
 
-        break;
-
       case 1:
         console.log("Falta por implementar la opción: : ", key);
         break;
