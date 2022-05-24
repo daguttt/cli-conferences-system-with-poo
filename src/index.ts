@@ -31,6 +31,17 @@ const addMentor = (name: string, email: string, password: string): void => {
   console.log(message);
 };
 
+const showMentors = (): void => {
+  if (Store.mentors.length)
+    Store.mentors?.forEach((mentor) => {
+      console.log(`
+            Nombre: ${mentor.name}
+            Email: ${mentor.email}
+            `);
+    });
+  else console.log("No hay mentores registrados");
+};
+
 (async () => {
   const menu = new Menu();
   while (menu.isActive()) {
@@ -68,6 +79,7 @@ const addMentor = (name: string, email: string, password: string): void => {
         break;
 
       case 5:
+        showMentors();
         break;
 
       case 6:
