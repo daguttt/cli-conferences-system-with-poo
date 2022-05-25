@@ -3,12 +3,6 @@ import { Mentor } from "./Mentor";
 import { Response } from "./Response";
 import { Student } from "./Student";
 
-class StoreResponse extends Response {
-  constructor(error: boolean, message) {
-    super(error, message)
-  }
-}
-
 class Store {
   constructor(
     public students: Student[],
@@ -24,12 +18,9 @@ class Store {
     return this.students.findIndex((student) => student.email === email) !== -1;
   }
   // TODO: Use Generics to add a single method `setData` (I don'k know yet how to do it 😕)
-  storeStudent(name: string, email: string, password: string): StoreResponse {
-    const response: StoreResponse = {
-      error: false,
-      message: "",
-    };
-    if (this.verifyStudentExistence(email)) {
+  public storeStudent(name: string, email: string, password: string): Response {
+    const response: Response = new Response();
+    if (!this.studentExists(email)) {
       const student = new Student(name, email, password);
       this.students.push(student);
       response.error = false;
