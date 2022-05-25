@@ -27,7 +27,7 @@
   "homepage": "https://github.com/RosoPenaranda/beesoftLabs-tscpoo#readme",
   "devDependencies": {
     "@types/node": "^17.0.35",
-    "nodemon": "^2.0.7",
+    "nodemon": "2.0.16",
     "ts-loader": "^9.1.2",
     "typescript": "^4.2.4",
     "webpack": "^5.36.2",
