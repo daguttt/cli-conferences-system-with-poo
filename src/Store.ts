@@ -20,8 +20,8 @@ class Store {
   // -*************************************************************************-
 
   // STUDENT
-  verifyStudentExistence(email: string): boolean {
-    return this.students.findIndex((student) => student.email === email) === -1;
+  private studentExists(email: string): boolean {
+    return this.students.findIndex((student) => student.email === email) !== -1;
   }
   // TODO: Use Generics to add a single method `setData` (I don'k know yet how to do it 😕)
   storeStudent(name: string, email: string, password: string): StoreResponse {
@@ -43,9 +43,8 @@ class Store {
   // -*************************************************************************-
 
   // MENTORS
-
-  verifyMentorExistence(email: string): boolean {
-    return this.mentors.findIndex((mentor) => mentor.email === email) === -1;
+  public mentorExists(email: string): boolean {
+    return this.mentors.findIndex((mentor) => mentor.email === email) !== -1;
   }
   public getMentorThatAlreadyExists(email: string): Mentor {
     return this.mentors.find((mentor) => mentor.email === email)!;
