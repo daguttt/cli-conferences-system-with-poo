@@ -47,12 +47,12 @@ class Store {
   verifyMentorExistence(email: string): boolean {
     return this.mentors.findIndex((mentor) => mentor.email === email) === -1;
   }
-  storeMentor(name: string, email: string, password: string): StoreResponse {
-    const response: StoreResponse = {
-      error: false,
-      message: "",
-    };
-    if (this.verifyMentorExistence(email)) {
+  public getMentorThatAlreadyExists(email: string): Mentor {
+    return this.mentors.find((mentor) => mentor.email === email)!;
+  }
+  public storeMentor(name: string, email: string, password: string): Response {
+    const response: Response = new Response();
+    if (!this.mentorExists(email)) {
       const mentor = new Mentor(name, email, password);
       this.mentors.push(mentor);
       response.error = false;
