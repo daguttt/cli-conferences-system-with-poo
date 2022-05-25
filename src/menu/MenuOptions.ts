@@ -67,10 +67,12 @@ export class MenuOptions extends Menu {
   }
   public static showConferences(): void {
     if (Store.conferences.length)
-      Store.conferences?.forEach(({ name, startingDate, endingDate }) => {
-        console.log(`Título evento: ${name}`);
-        console.log(`Fecha de inicio ---------- Fecha de finalizacion`);
-        console.log(`${startingDate}  ---------- ${endingDate}`);
+      Store.conferences?.forEach(({ id, name, startingDate, endingDate }) => {
+        console.log(`${id + 1}) Título evento: "${name}"`);
+        console.log(`Fecha de inicio ----- Fecha de finalizacion`);
+        console.log(
+          `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
+        );
       });
     else console.log("No hay conferencias");
   }
