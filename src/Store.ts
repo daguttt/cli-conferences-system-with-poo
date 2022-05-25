@@ -53,5 +53,48 @@ class Store {
     }
     return response;
   }
+
+  // -*************************************************************************-
+
+  // CONFERENCES
+  public addConference(
+    mentorEmail: string,
+    name: string,
+    startingDate: Date,
+    endingDate: Date
+  ): Response {
+    const response = new Response();
+    if (!this.mentorExists(mentorEmail)) {
+      response.error = true;
+      response.message = "No existe un mentor registrado con ese email";
+      return response;
+    }
+    const mentor = this.getMentorThatAlreadyExists(mentorEmail);
+    const isMentorAvailable = Mentor.verifyMentorAvailability(
+      mentor,
+      startingDate
+    );
+    if (!isMentorAvailable) {
+      response.error = true;
+      response.message =
+        "El mentor dictará un evento ese día. Intenta de nuevo con otro día";
+      return response;
+    }
+    const conference = new Conference(
+      this.numberOfConferences,
+      name,
+      mentor,
+      [],
+      startingDate,
+      endingDate
+    );
+    this.conferences.push(conference);
+    mentor.conferences.push(conference);
+    this.numberOfConferences++;
+    response.error = false;
+    response.message =
+      "******* SUCCESS!: Conferencia agregada correctamente *******";
+    return response;
+  }
 }
 export default new Store([], [], []);

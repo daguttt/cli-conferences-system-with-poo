@@ -1,5 +1,5 @@
+import { Mentor } from "./Mentor";
 import { Menu } from "./Menu";
-// @ts-ignore
 import Store from "./Store";
 
 // -*************************************************************************-
@@ -8,6 +8,7 @@ import Store from "./Store";
 const addStudent = (name: string, email: string, password: string): void => {
   // ! I'm not using the 'error'
   const { message } = Store.storeStudent(name, email, password);
+  console.log("\n");
   console.log(message);
 };
 
@@ -28,6 +29,7 @@ const showStudents = (): void => {
 const addMentor = (name: string, email: string, password: string): void => {
   // ! I'm not using the 'error'
   const { message } = Store.storeMentor(name, email, password);
+  console.log("\n");
   console.log(message);
 };
 
@@ -71,15 +73,34 @@ const showMentors = (): void => {
         break;
 
       case 3:
-        console.log("Falta por implementar la opción: : ", key);
+        const mentorEmail = await menu.getString("Introduce tu correo:");
+        const mentorPassword = await menu.getString("Introduce tu contraseña:");
+        const { error: errorOfAuth, message: authMessage } = Mentor.authMentor(
+          mentorEmail,
+          mentorPassword
+        );
+        console.log(authMessage);
+        if (errorOfAuth) break;
+        const { message: storeMessage } = Store.addConference(
+          mentorEmail,
+          await menu.getString("Introduce el título de tu conferencia:"),
+          new Date(await menu.getString("Introduce la fecha de inicio:")),
+          new Date(await menu.getString("Introduce la fecha de fin:"))
+        );
+        console.log(storeMessage);
         break;
 
       case 4:
+        console.log("\n");
+        console.log("\n");
         showStudents();
         break;
 
       case 5:
+        console.log("\n");
+        console.log("\n");
         showMentors();
+
         break;
 
       case 6:
