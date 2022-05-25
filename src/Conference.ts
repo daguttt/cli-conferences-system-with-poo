@@ -1,8 +1,12 @@
+import { Mentor } from "./Mentor";
+import { Student } from "./Student";
+
 export class Conference {
   constructor(
     public id: number,
-    public mentor: string, // Correo mentor
-    public participants: string[], // Correos de los estudiantes
+    public name: string,
+    public mentor: Mentor,
+    public participants: Student[],
     public startingDate: Date,
     public endingDate: Date
   ) {}
