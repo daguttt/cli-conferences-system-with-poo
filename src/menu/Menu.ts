@@ -36,8 +36,9 @@ export class Menu {
   #  3) Agregar Conferencia                         #
   #  4) Ver lista de Estudiantes                    #
   #  5) Ver lista de Mentores                       #
-  #  6) Registrarse en una conferencia              #
-  #  7) Esta opción es un ejemplo, ¿quieres probar? #
+  #  6) Ver lista de Conferencias                   #
+  #  7) Registrarse en una conferencia              #
+  #  8) Esta opción es un ejemplo, ¿quieres probar? #
   #  0) Salir.                                      #
   ###################################################
     `;

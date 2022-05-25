@@ -1,7 +1,5 @@
-import { Mentor } from "./Mentor";
 import { Menu } from "./menu/Menu";
 import { MenuOptions } from "./menu/MenuOptions";
-import Store from "./Store";
 
 // -*************************************************************************-
 
@@ -43,20 +41,22 @@ import Store from "./Store";
         console.log("\n");
         console.log("\n");
         MenuOptions.showMentors();
-
         break;
 
       case 6:
-        console.log("Falta por implementar la opción: : ", key);
+        MenuOptions.showConferences();
         break;
 
       case 7:
         console.log("Falta por implementar la opción: : ", key);
         break;
 
+      case 8:
+        console.log("Falta por implementar la opción: : ", key);
+        break;
+
       default:
         console.log("Debe elegir una opción valida");
-        //menu.close()
         break;
     }
   }
