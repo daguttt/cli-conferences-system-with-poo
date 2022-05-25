@@ -77,7 +77,7 @@ class Store {
     if (!isMentorAvailable) {
       response.error = true;
       response.message =
-        "El mentor dictará un evento ese día. Intenta de nuevo con otro día";
+        "El mentor tiene ocupada esa fecha. Intenta de nuevo con otro fecha";
       return response;
     }
     const conference = new Conference(
@@ -97,4 +97,5 @@ class Store {
     return response;
   }
 }
-export default new Store([], [], []);
+const temporalMentors = [new Mentor("roso", "roso@gmail.com", "roso123")];
+export default new Store([], [], temporalMentors);

@@ -10,13 +10,30 @@ export class Mentor extends Person {
   }
   public static verifyMentorAvailability(
     mentor: Mentor,
-    startingDateEvent: Date
+    startingDateEventToCreate: Date
   ): boolean {
-    if (mentor.conferences.length)
-      return mentor.conferences.every((conference) => {
-        conference.endingDate.getTime() <= startingDateEvent.getTime();
-      });
-    return true;
+    if (!mentor.conferences.length) return false;
+
+    const currentDate: number = Date.parse(Date());
+    const tomorrow: number = currentDate + 86400 * 1000;
+    const isAfterCurrentDate: boolean =
+      tomorrow <= startingDateEventToCreate.getTime();
+
+    if (!isAfterCurrentDate) return false;
+
+    const busyDatesPairs: FlatArray<number[], 0 | 1>[] = mentor.conferences
+      .reduce((acc: number[][], conference) => {
+        acc.push([
+          conference.startingDate.getTime(),
+          conference.endingDate.getTime(),
+        ]);
+        return [...acc];
+      }, [])
+      .flat(2);
+    const sortedAscendingBusyDates = busyDatesPairs.sort((a, b) => a - b);
+    return sortedAscendingBusyDates.every(
+      (date) => date !== startingDateEventToCreate.getTime()
+    );
   }
   public static authMentor(email: string, password: string): Response {
     const response = new Response();
