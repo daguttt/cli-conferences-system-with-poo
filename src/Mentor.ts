@@ -21,19 +21,17 @@ export class Mentor extends Person {
 
     if (!isAfterCurrentDate) return false;
 
-    const busyDatesPairs: FlatArray<number[], 0 | 1>[] = mentor.conferences
-      .reduce((acc: number[][], conference) => {
-        acc.push([
-          conference.startingDate.getTime(),
-          conference.endingDate.getTime(),
-        ]);
-        return [...acc];
-      }, [])
+    const busyDates: FlatArray<number[], 0 | 1>[] = mentor.conferences
+      .map((conference) => [
+        conference.startingDate.getTime(),
+        conference.endingDate.getTime(),
+      ])
       .flat(2);
-    const sortedAscendingBusyDates = busyDatesPairs.sort((a, b) => a - b);
-    return sortedAscendingBusyDates.every(
+    const sortedAscendingBusyDates = busyDates.sort((a, b) => a - b);
+    const isOnAvailableDate: boolean = sortedAscendingBusyDates.every(
       (date) => date !== startingDateEventToCreate.getTime()
     );
+    return isOnAvailableDate;
   }
   public static authMentor(email: string, password: string): Response {
     const response = new Response();
