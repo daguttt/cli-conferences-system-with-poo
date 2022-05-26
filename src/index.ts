@@ -32,19 +32,18 @@ import { MenuOptions } from "./menu/MenuOptions";
         break;
 
       case 4:
-        console.log("\n");
-        console.log("\n");
         MenuOptions.showStudents();
+        await menu.waitForPressingEnter();
         break;
 
       case 5:
-        console.log("\n");
-        console.log("\n");
         MenuOptions.showMentors();
+        await menu.waitForPressingEnter();
         break;
 
       case 6:
         MenuOptions.showConferences();
+        await menu.waitForPressingEnter();
         break;
 
       case 7:

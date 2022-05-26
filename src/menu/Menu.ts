@@ -76,4 +76,9 @@ export class Menu {
     const data = await this.ask();
     return `${data}`;
   }
+
+  async waitForPressingEnter(): Promise<void> {
+    console.log();
+    await this.getString("(Presiona ENTER para continuar)");
+  }
 }
