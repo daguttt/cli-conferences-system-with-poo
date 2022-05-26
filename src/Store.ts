@@ -8,7 +8,7 @@ class Store {
     public students: Student[],
     public conferences: Conference[],
     public mentors: Mentor[],
-    public numberOfConferences: number = 0
+    public autoIncrementIdForConferences: number = 1
   ) {}
 
   // -*************************************************************************-
@@ -81,7 +81,7 @@ class Store {
       return response;
     }
     const conference = new Conference(
-      this.numberOfConferences,
+      this.autoIncrementIdForConferences,
       name,
       mentor,
       [],
@@ -90,7 +90,7 @@ class Store {
     );
     this.conferences.push(conference);
     mentor.conferences.push(conference);
-    this.numberOfConferences++;
+    this.autoIncrementIdForConferences++;
     response.error = false;
     response.message =
       "******* SUCCESS!: Conferencia agregada correctamente *******";
