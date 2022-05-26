@@ -47,38 +47,50 @@ export class MenuOptions extends Menu {
     console.log(storeMessage);
   }
   public static showStudents(): void {
-    if (Store.students.length)
+    if (Store.students.length) {
+      console.log("################ LISTA DE ESTUDIANTES ################");
       Store.students?.forEach((student) => {
         console.log(`
             Nombre: ${student.name}
             Email: ${student.email}
             `);
       });
-    else console.log("No hay estudiantes registrados");
+      console.log("################# ################# #################");
+    } else console.log("No hay estudiantes registrados");
   }
   public static showMentors(): void {
-    if (Store.mentors.length)
+    if (Store.mentors.length) {
+      console.log("################ LISTA DE MENTORES ##################");
       Store.mentors?.forEach((mentor) => {
         console.log(`
             Nombre: ${mentor.name}
             Email: ${mentor.email}
             `);
       });
-    else console.log("No hay mentores registrados");
+      console.log("################# ################# #################");
+    } else console.log("No hay mentores registrados");
   }
   public static showConferences(): void {
-    if (Store.conferences.length)
-      Store.conferences?.forEach(
-        ({ id, name, startingDate, endingDate, participants }) => {
-          console.log(`${id}) Título evento: "${name}"`);
-          console.log(`Fecha de inicio -----> Fecha de finalizacion`);
-          console.log(
-            `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
-          );
-          console.log(`Número de participantes: ${participants.length}`);
-        }
-      );
-    else console.log("No hay conferencias");
+    if (Store.conferences.length) {
+      console.log("############### LISTA DE CONFERENCIAS ################");
+      [...Store.conferences]
+        .sort((a, b) => a.endingDate.getTime() - b.startingDate.getTime())
+        .forEach(
+          ({ id, name, mentor, startingDate, endingDate, participants }) => {
+            console.log();
+            console.log(`ID: ${id}`);
+            console.log(`Título evento: "${name}"`);
+            console.log(`Mentor: "${mentor.name}"`);
+            console.log(`Fecha de inicio | Fecha de finalizacion`);
+            console.log(
+              `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
+            );
+            console.log(`Número de participantes: ${participants.length}`);
+            console.log();
+          }
+        );
+      console.log("################# ################# #################");
+    } else console.log("No hay conferencias");
   }
   public static async registerStudentInConference(): Promise<void> {
     const studentEmail = await this.prototype.getString(
