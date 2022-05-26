@@ -1,4 +1,5 @@
 import { Mentor } from "./Mentor";
+import Store from "./Store";
 import { Student } from "./Student";
 
 export class Conference {
@@ -12,5 +13,12 @@ export class Conference {
   ) {}
   public static verifyConferenceAvailability(conference: Conference) {
     return conference.participants.length < 20;
+  }
+  public checkStudentInsideParticipants(student: Student): boolean {
+    return (
+      this.participants.findIndex(
+        (participant) => participant.email === student.email
+      ) !== -1
+    );
   }
 }

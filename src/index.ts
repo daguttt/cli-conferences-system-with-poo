@@ -48,7 +48,7 @@ import { MenuOptions } from "./menu/MenuOptions";
         break;
 
       case 7:
-        console.log("Falta por implementar la opción: : ", key);
+        await MenuOptions.registerStudentInConference();
         break;
 
       case 8:

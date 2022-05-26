@@ -1,6 +1,7 @@
 import { Menu } from "./Menu";
 import Store from "../Store";
 import { Mentor } from "../Mentor";
+import { Student } from "../Student";
 
 export class MenuOptions extends Menu {
   constructor() {
@@ -78,5 +79,27 @@ export class MenuOptions extends Menu {
         }
       );
     else console.log("No hay conferencias");
+  }
+  public static async registerStudentInConference(): Promise<void> {
+    const studentEmail = await this.prototype.getString(
+      "Introduce tu correo electrónico:"
+    );
+    if (!Store.studentExists(studentEmail)) {
+      console.log("No estás registrado en el sistema");
+      return;
+    }
+    MenuOptions.showConferences();
+    const student: Student = Store.getStudentThatAlreadyExists(studentEmail);
+    const conferenceIndex = await MenuOptions.prototype.getInt(
+      "Elige la conferencia a la que deseas asistir (número)"
+    );
+    if (!Store.conferenceExists(conferenceIndex)) {
+      console.log("Conferencia no encontrada");
+      return;
+    }
+    const conference = Store.getConferenceThatAlreadyExists(conferenceIndex);
+    const { message } = Store.registerStudentInConference(student, conference);
+    console.log("\n");
+    console.log(message);
   }
 }

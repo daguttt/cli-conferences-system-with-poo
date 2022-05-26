@@ -14,8 +14,11 @@ class Store {
   // -*************************************************************************-
 
   // STUDENT
-  private studentExists(email: string): boolean {
+  public studentExists(email: string): boolean {
     return this.students.findIndex((student) => student.email === email) !== -1;
+  }
+  public getStudentThatAlreadyExists(email: string): Student {
+    return this.students.find((student) => student.email === email)!;
   }
   // TODO: Use Generics to add a single method `setData` (I don'k know yet how to do it 😕)
   public storeStudent(name: string, email: string, password: string): Response {
@@ -57,6 +60,14 @@ class Store {
   // -*************************************************************************-
 
   // CONFERENCES
+  public conferenceExists(id: number): boolean {
+    return (
+      this.conferences.findIndex((conference) => conference.id === id) !== -1
+    );
+  }
+  public getConferenceThatAlreadyExists(id: number): Conference {
+    return this.conferences.find((conference) => conference.id === id)!;
+  }
   public addConference(
     mentorEmail: string,
     name: string,
@@ -96,6 +107,45 @@ class Store {
       "******* SUCCESS!: Conferencia agregada correctamente *******";
     return response;
   }
+  public registerStudentInConference(
+    student: Student,
+    conference: Conference
+  ): Response {
+    const response = new Response();
+    const isConferenceAvailable =
+      Conference.verifyConferenceAvailability(conference);
+    if (!isConferenceAvailable) {
+      response.error = true;
+      response.message = "La conferencia no tiene más cupos disponibles";
+    }
+    const isStudentRegisteredNow =
+      conference.checkStudentInsideParticipants(student);
+    if (isStudentRegisteredNow) {
+      response.error = true;
+      response.message = "Ya te encuentras en la lista de participantes";
+      return response;
+    }
+    conference.participants.push(student);
+    response.error = false;
+    response.message = `Has sido añadido a la lista de participantes de "${conference.name}" correctamente`;
+    return response;
+  }
 }
-const temporalMentors = [new Mentor("roso", "roso@gmail.com", "roso123")];
-export default new Store([], [], temporalMentors);
+const roso = new Mentor("roso", "roso@gmail.com", "roso123");
+const temporalMentors = [roso];
+const temporalStudents = [
+  new Student("dagut", "dagut@gmail.com", "dagut123"),
+  new Student("dani", "dani@gmail.com", "dani123"),
+  new Student("daniel", "daniel@gmail.com", "daniel123"),
+];
+const tomorrow = new Date(Date.parse(Date()) + 86400 * 1000);
+const dayPastTomorrow = new Date(Date.parse(Date()) + 86400 * 2 * 1000);
+const temporalConferences = [
+  new Conference(1, "POO", roso, [], tomorrow, dayPastTomorrow),
+];
+export default new Store(
+  temporalStudents,
+  temporalConferences,
+  temporalMentors
+);
+// export default new Store([], [], [])
