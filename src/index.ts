@@ -54,6 +54,18 @@ import { MenuOptions } from "./menu/MenuOptions";
         console.log("Falta por implementar la opción: : ", key);
         break;
 
+      case 9:
+        console.log("Falta por implementar la opción: : ", key);
+        break;
+
+      case 10:
+        console.log("Falta por implementar la opción: : ", key);
+        break;
+
+      case 11:
+        MenuOptions.probarUI();
+        break;
+
       default:
         console.log("Debe elegir una opción valida");
         break;

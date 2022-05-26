@@ -114,4 +114,11 @@ export class MenuOptions extends Menu {
     console.log("\n");
     console.log(message);
   }
+  public static probarUI() {
+    console.log();
+    console.log("---------------------- TESTS -------------------------");
+    console.log("SUCCESS: Conferencia agregada correctamente");
+    console.log("------------------------------------------------------");
+    console.log();
+  }
 }
