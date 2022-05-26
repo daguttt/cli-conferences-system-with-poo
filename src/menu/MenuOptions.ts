@@ -67,13 +67,16 @@ export class MenuOptions extends Menu {
   }
   public static showConferences(): void {
     if (Store.conferences.length)
-      Store.conferences?.forEach(({ id, name, startingDate, endingDate }) => {
-        console.log(`${id + 1}) Título evento: "${name}"`);
-        console.log(`Fecha de inicio ----- Fecha de finalizacion`);
-        console.log(
-          `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
-        );
-      });
+      Store.conferences?.forEach(
+        ({ id, name, startingDate, endingDate, participants }) => {
+          console.log(`${id}) Título evento: "${name}"`);
+          console.log(`Fecha de inicio -----> Fecha de finalizacion`);
+          console.log(
+            `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
+          );
+          console.log(`Número de participantes: ${participants.length}`);
+        }
+      );
     else console.log("No hay conferencias");
   }
 }
