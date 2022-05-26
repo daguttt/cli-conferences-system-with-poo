@@ -1,7 +1,8 @@
 import { Menu } from "./Menu";
-import Store from "../Store";
 import { Mentor } from "../Mentor";
+import Store from "../Store";
 import { Student } from "../Student";
+import { Utils } from "../utils/Utils";
 
 export class MenuOptions extends Menu {
   constructor() {
@@ -51,7 +52,7 @@ export class MenuOptions extends Menu {
       console.log("################ LISTA DE ESTUDIANTES ################");
       Store.students?.forEach((student) => {
         console.log(`
-            Nombre: ${student.name}
+            Nombre: ${Utils.titleCase(student.name)}
             Email: ${student.email}
             `);
       });
@@ -63,7 +64,7 @@ export class MenuOptions extends Menu {
       console.log("################ LISTA DE MENTORES ##################");
       Store.mentors?.forEach((mentor) => {
         console.log(`
-            Nombre: ${mentor.name}
+            Nombre: ${Utils.titleCase(mentor.name)}
             Email: ${mentor.email}
             `);
       });
@@ -80,7 +81,7 @@ export class MenuOptions extends Menu {
             console.log();
             console.log(`ID: ${id}`);
             console.log(`Título evento: "${name}"`);
-            console.log(`Mentor: "${mentor.name}"`);
+            console.log(`Mentor: "${Utils.titleCase(mentor.name)}"`);
             console.log(`Fecha de inicio | Fecha de finalizacion`);
             console.log(
               `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
@@ -103,7 +104,7 @@ export class MenuOptions extends Menu {
     MenuOptions.showConferences();
     const student: Student = Store.getStudentThatAlreadyExists(studentEmail);
     const conferenceIndex = await MenuOptions.prototype.getInt(
-      "Elige la conferencia a la que deseas asistir (número)"
+      "Elige la conferencia a la que deseas asistir: (ID)"
     );
     if (!Store.conferenceExists(conferenceIndex)) {
       console.log("Conferencia no encontrada");
