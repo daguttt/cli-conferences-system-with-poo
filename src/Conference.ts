@@ -10,4 +10,7 @@ export class Conference {
     public startingDate: Date,
     public endingDate: Date
   ) {}
+  public static verifyConferenceAvailability(conference: Conference) {
+    return conference.participants.length < 20;
+  }
 }
