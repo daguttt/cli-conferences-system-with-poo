@@ -69,21 +69,15 @@ class Store {
     return this.conferences.find((conference) => conference.id === id)!;
   }
   public addConference(
-    mentorEmail: string,
+    mentor: Mentor,
     name: string,
     startingDate: Date,
     endingDate: Date
   ): Response {
     const response = new Response();
-    if (!this.mentorExists(mentorEmail)) {
-      response.error = true;
-      response.message = "No existe un mentor registrado con ese email";
-      return response;
-    }
-    const mentor = this.getMentorThatAlreadyExists(mentorEmail);
-    const isMentorAvailable = Mentor.verifyMentorAvailability(
-      mentor,
-      startingDate
+    const isMentorAvailable = mentor.verifyMentorAvailability(
+      startingDate,
+      endingDate
     );
     if (!isMentorAvailable) {
       response.error = true;
@@ -103,8 +97,7 @@ class Store {
     mentor.conferences.push(conference);
     this.autoIncrementIdForConferences++;
     response.error = false;
-    response.message =
-      "******* SUCCESS!: Conferencia agregada correctamente *******";
+    response.message = "SUCCESS: Conferencia agregada correctamente";
     return response;
   }
   public registerStudentInConference(

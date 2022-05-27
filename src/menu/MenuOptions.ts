@@ -39,8 +39,9 @@ export class MenuOptions extends Menu {
     );
     console.log(authMessage);
     if (errorOfAuth) return;
+    const mentor: Mentor = Store.getMentorThatAlreadyExists(mentorEmail);
     const { message: storeMessage } = Store.addConference(
-      mentorEmail,
+      mentor,
       await this.prototype.getString("Introduce el título de tu conferencia:"),
       new Date(await this.prototype.getString("Introduce la fecha de inicio:")),
       new Date(await this.prototype.getString("Introduce la fecha de fin:"))
