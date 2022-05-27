@@ -1,6 +1,6 @@
+import Store from "../Store";
 import { Menu } from "./Menu";
 import { Mentor } from "../Mentor";
-import Store from "../Store";
 import { Student } from "../Student";
 import { Utils } from "../utils/Utils";
 
