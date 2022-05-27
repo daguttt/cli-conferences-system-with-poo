@@ -105,8 +105,7 @@ class Store {
     conference: Conference
   ): Response {
     const response = new Response();
-    const isConferenceAvailable =
-      Conference.verifyConferenceAvailability(conference);
+    const isConferenceAvailable = conference.verifyConferenceAvailability();
     if (!isConferenceAvailable) {
       response.error = true;
       response.message = "La conferencia no tiene más cupos disponibles";
