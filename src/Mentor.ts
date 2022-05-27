@@ -8,11 +8,11 @@ export class Mentor extends Person {
     super(name, email, password);
     this.conferences = [];
   }
-  public static verifyMentorAvailability(
-    mentor: Mentor,
-    startingDateEventToCreate: Date
+  public verifyMentorAvailability(
+    startingDateEventToCreate: Date,
+    endingDateEventToCreate: Date
   ): boolean {
-    if (!mentor.conferences.length) return false;
+    if (!this.conferences.length) return true;
 
     const currentDate: number = Date.parse(Date());
     const tomorrow: number = currentDate + 86400 * 1000;
@@ -21,15 +21,27 @@ export class Mentor extends Person {
 
     if (!isAfterCurrentDate) return false;
 
-    const busyDates: FlatArray<number[], 0 | 1>[] = mentor.conferences
+    const sortedAscendingBusyDates: number[][] = this.conferences
       .map((conference) => [
         conference.startingDate.getTime(),
         conference.endingDate.getTime(),
       ])
-      .flat(2);
-    const sortedAscendingBusyDates = busyDates.sort((a, b) => a - b);
-    const isOnAvailableDate: boolean = sortedAscendingBusyDates.every(
-      (date) => date !== startingDateEventToCreate.getTime()
+      .sort((a: number[], b: number[]) => a[1] - b[0]);
+    const firstBusyDate = sortedAscendingBusyDates[0];
+    const isBeforeFirstConference =
+      endingDateEventToCreate.getTime() < firstBusyDate[0];
+
+    if (isBeforeFirstConference) return true;
+
+    const isOnAvailableDate: boolean = sortedAscendingBusyDates.some(
+      (date: number[], index, array) => {
+        const currentEndingDate = date[1];
+        const nextStartingDate = array?.[index + 1]?.[0] ?? Infinity;
+        return (
+          currentEndingDate < startingDateEventToCreate.getTime() &&
+          endingDateEventToCreate.getTime() < nextStartingDate
+        );
+      }
     );
     return isOnAvailableDate;
   }

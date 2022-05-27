@@ -124,21 +124,5 @@ class Store {
     return response;
   }
 }
-const roso = new Mentor("roso", "roso@gmail.com", "roso123");
-const temporalMentors = [roso];
-const temporalStudents = [
-  new Student("dagut", "dagut@gmail.com", "dagut123"),
-  new Student("dani", "dani@gmail.com", "dani123"),
-  new Student("daniel", "daniel@gmail.com", "daniel123"),
-];
-const tomorrow = new Date(Date.parse(Date()) + 86400 * 1000);
-const dayPastTomorrow = new Date(Date.parse(Date()) + 86400 * 2 * 1000);
-const temporalConferences = [
-  new Conference(1, "POO", roso, [], tomorrow, dayPastTomorrow),
-];
-export default new Store(
-  temporalStudents,
-  temporalConferences,
-  temporalMentors
-);
+export default new Store([], [], []);
 // export default new Store([], [], [])
