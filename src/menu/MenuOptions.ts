@@ -3,6 +3,7 @@ import { Menu } from "./Menu";
 import { Mentor } from "../Mentor";
 import { Student } from "../Student";
 import { Utils } from "../utils/Utils";
+import { ValidationMessages } from "../utils/Validation";
 
 export class MenuOptions extends Menu {
   constructor() {
@@ -10,7 +11,8 @@ export class MenuOptions extends Menu {
   }
   public static async addMentor(): Promise<void> {
     const name = await this.prototype.getString("Introduce el nombre: ");
-    const email = await this.prototype.getString("Introduce el email: ");
+    const email = await this.prototype.getEmail();
+    if (!email) return;
     const password = await this.prototype.getString(
       "Introduce una contraseña: "
     );
@@ -20,7 +22,8 @@ export class MenuOptions extends Menu {
   }
   public static async addStudent(): Promise<void> {
     const name = await this.prototype.getString("Introduce el nombre: ");
-    const email = await this.prototype.getString("Introduce el email: ");
+    const email = await this.prototype.getEmail();
+    if (!email) return;
     const password = await this.prototype.getString(
       "Introduce una contraseña: "
     );
@@ -29,7 +32,8 @@ export class MenuOptions extends Menu {
     console.log(message);
   }
   public static async addConference(): Promise<void> {
-    const mentorEmail = await this.prototype.getString("Introduce tu correo:");
+    const mentorEmail = await this.prototype.getEmail();
+    if (!mentorEmail) return;
     const mentorPassword = await this.prototype.getString(
       "Introduce tu contraseña:"
     );
@@ -95,9 +99,8 @@ export class MenuOptions extends Menu {
     } else console.log("No hay conferencias");
   }
   public static async registerStudentInConference(): Promise<void> {
-    const studentEmail = await this.prototype.getString(
-      "Introduce tu correo electrónico:"
-    );
+    const studentEmail = await this.prototype.getEmail();
+    if (!studentEmail) return;
     if (!Store.studentExists(studentEmail)) {
       console.log("No estás registrado en el sistema");
       return;

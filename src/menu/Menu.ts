@@ -1,3 +1,8 @@
+import {
+  Validation,
+  ValidationMessages,
+  ValidationType,
+} from "../utils/Validation";
 export class Menu {
   protected active: boolean;
   private consoleNumber: number;
@@ -50,7 +55,7 @@ export class Menu {
   }
 
   private ask() {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       process.stdin.once("data", (chunk) => {
         let name = chunk.toString().trim();
         resolve(name);
@@ -71,17 +76,49 @@ export class Menu {
 
   /**
    * @description Funcion asincrona que permite solicitar un texto por consola
-   * @param question texto que indica pregunta a realizar
-   * @returns un string
+   * @param printMessage texto que indica pregunta a realizar
+   * @param type (Opcional) Tipo de validación a realizar
+   * @returns string
    */
-  async getString(question: string): Promise<string> {
-    console.log(question);
-    const data = await this.ask();
-    return `${data}`;
+  async getString(
+    printMessage: string,
+    type?: ValidationType
+  ): Promise<string> {
+    if (!type) {
+      console.log(printMessage);
+      const data = await this.ask();
+      return data;
+    }
+    const validation = new Validation(type);
+    let data: string = "";
+    while (true) {
+      console.log(printMessage);
+      data = await this.ask();
+      let { message: validationMessage, attempts } = validation.validate(data);
+      if (validationMessage === ValidationMessages.OnSuccess) break;
+      if (validationMessage === ValidationMessages.OnError) {
+        console.log();
+        console.log(`${validationMessage} (${attempts})`);
+        data = "";
+        break;
+      }
+      if (validationMessage === ValidationMessages.OnAttempt) {
+        console.log();
+        console.log(`${validationMessage} (${attempts})`);
+        console.log();
+      }
+    }
+    return data;
   }
 
   async waitForPressingEnter(): Promise<void> {
     console.log();
     await this.getString("(Presiona ENTER para continuar)");
+  }
+
+  async getEmail(
+    printMessage: string = "Introduce tu correo electrónico:"
+  ): Promise<string> {
+    return this.getString(printMessage, "email");
   }
 }
