@@ -50,11 +50,26 @@ export class MenuOptions extends Menu {
     console.log(authMessage);
     if (errorOfAuth) return;
     const mentor: Mentor = Store.getMentorThatAlreadyExists(mentorEmail);
+    const conferenceTitle = await this.prototype.getString(
+      "Introduce el título de tu conferencia:"
+    );
+    const startingDate = await this.prototype.getString(
+      "Introduce la fecha de inicio:",
+      "date"
+    );
+    if (!startingDate) return;
+    console.log(startingDate);
+    const endingDate = await this.prototype.getString(
+      "Introduce la fecha de fin:",
+      "date"
+    );
+    if (!endingDate) return;
+    console.log(endingDate);
     const { message: storeMessage } = Store.addConference(
       mentor,
-      await this.prototype.getString("Introduce el título de tu conferencia:"),
-      new Date(await this.prototype.getString("Introduce la fecha de inicio:")),
-      new Date(await this.prototype.getString("Introduce la fecha de fin:"))
+      conferenceTitle,
+      new Date(startingDate),
+      new Date(endingDate)
     );
     console.log(storeMessage);
   }

@@ -39,6 +39,7 @@ interface ValidationTypes {
 const validationTypes: ValidationTypes = {
   email: /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,
   password: /^.{8,20}$/i,
+  date: /^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/i,
 };
 
 export enum ValidationMessages {
