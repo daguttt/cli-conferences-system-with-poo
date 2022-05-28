@@ -51,7 +51,7 @@ import { MenuOptions } from "./menu/MenuOptions";
         break;
 
       case 8:
-        console.log("Falta por implementar la opción: : ", key);
+        await MenuOptions.showParticipantsByConference();
         break;
 
       case 9:

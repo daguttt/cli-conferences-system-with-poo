@@ -139,6 +139,36 @@ export class MenuOptions extends Menu {
     console.log("\n");
     console.log(message);
   }
+  public static async showParticipantsByConference(): Promise<void> {
+    if (!Store.conferences.length) return console.log("No hay conferencias");
+    this.showConferences();
+    const conferenceIndex = await MenuOptions.prototype.getInt(
+      "Elige la conferencia a la que deseas asistir: (ID)"
+    );
+    if (!Store.conferenceExists(conferenceIndex)) {
+      console.log("Conferencia no encontrada");
+      return;
+    }
+    const conference = Store.getConferenceThatAlreadyExists(conferenceIndex);
+    console.log(`################ "${conference.name}" ################`);
+    console.log();
+    if (!conference.participants.length) {
+      console.log("Esta conferencia aún no tiene estudiantes registrados");
+      return;
+    }
+    console.log(
+      `-> Número de Participantes: ${conference.participants.length}`
+    );
+    conference.participants.forEach((participant, index) => {
+      console.log(
+        `
+        ${index + 1})
+        Nombre: ${Utils.titleCase(participant.name)}
+        Email: ${participant.email}
+        `
+      );
+    });
+  }
   public static probarUI() {
     console.log();
     console.log("---------------------- TESTS -------------------------");

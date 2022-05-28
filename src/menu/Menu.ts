@@ -43,7 +43,7 @@ export class Menu {
   #  5) Ver lista de Mentores                       #
   #  6) Ver lista de Conferencias                   #
   #  7) Registrarse en una conferencia              #
-  #  8) Esta opción es un ejemplo, ¿quieres probar? #
+  #  8) Ver lista de Estudiantes por Conferencia    #
   #  9) Esta opción es un ejemplo, ¿quieres probar? #
   #  10) Esta opción es un ejemplo, ¿quieres probar?#
   #  11) Probar UI                                  #
