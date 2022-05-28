@@ -14,8 +14,10 @@ export class MenuOptions extends Menu {
     const email = await this.prototype.getEmail();
     if (!email) return;
     const password = await this.prototype.getString(
-      "Introduce una contraseña: "
+      "Introduce una contraseña: ",
+      "password"
     );
+    if (!password) return;
     const { message } = Store.storeMentor(name, email, password);
     console.log("\n");
     console.log(message);
@@ -25,8 +27,10 @@ export class MenuOptions extends Menu {
     const email = await this.prototype.getEmail();
     if (!email) return;
     const password = await this.prototype.getString(
-      "Introduce una contraseña: "
+      "Introduce una contraseña: ",
+      "password"
     );
+    if (!password) return;
     const { message } = Store.storeStudent(name, email, password);
     console.log("\n");
     console.log(message);
@@ -35,8 +39,10 @@ export class MenuOptions extends Menu {
     const mentorEmail = await this.prototype.getEmail();
     if (!mentorEmail) return;
     const mentorPassword = await this.prototype.getString(
-      "Introduce tu contraseña:"
+      "Introduce tu contraseña:",
+      "password"
     );
+    if (!mentorPassword) return;
     const { error: errorOfAuth, message: authMessage } = Mentor.authMentor(
       mentorEmail,
       mentorPassword
