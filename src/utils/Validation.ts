@@ -18,18 +18,15 @@ export class Validation {
   constructor(type: string) {
     this.format = validationTypes[type];
   }
-  public validate(textToValidate: string) {
+  public validate(textToValidate: string): ValidationResponse {
     const response = new ValidationResponse();
     const isCorrect = this.format.test(textToValidate);
     this.attempts += 1;
-
+    if (isCorrect)
+      return response.set(false, ValidationMessages.OnSuccess, this.attempts);
     if (!isCorrect && this.attempts < 3)
       return response.set(true, ValidationMessages.OnAttempt, this.attempts);
-
-    if (this.attempts === 3)
-      return response.set(true, ValidationMessages.OnError, this.attempts);
-
-    return response.set(false, ValidationMessages.OnSuccess, this.attempts);
+    return response.set(true, ValidationMessages.OnError, this.attempts);
   }
 }
 
