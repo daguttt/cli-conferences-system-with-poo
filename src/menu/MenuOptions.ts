@@ -3,6 +3,7 @@ import { Menu } from "./Menu";
 import { Mentor } from "../Mentor";
 import { Student } from "../Student";
 import { Utils } from "../utils/Utils";
+import { ValidationType } from "../utils/Validation";
 
 export class MenuOptions extends Menu {
   constructor() {
@@ -14,7 +15,7 @@ export class MenuOptions extends Menu {
     if (!email) return;
     const password = await this.prototype.getString(
       "Introduce una contraseña: ",
-      "password"
+      ValidationType.Password
     );
     if (!password) return;
     const { message } = Store.storeMentor(name, email, password);
@@ -27,7 +28,7 @@ export class MenuOptions extends Menu {
     if (!email) return;
     const password = await this.prototype.getString(
       "Introduce una contraseña: ",
-      "password"
+      ValidationType.Password
     );
     if (!password) return;
     const { message } = Store.storeStudent(name, email, password);
@@ -39,7 +40,7 @@ export class MenuOptions extends Menu {
     if (!mentorEmail) return;
     const mentorPassword = await this.prototype.getString(
       "Introduce tu contraseña:",
-      "password"
+      ValidationType.Password
     );
     if (!mentorPassword) return;
     const { error: errorOfAuth, message: authMessage } = Mentor.authMentor(
@@ -54,13 +55,13 @@ export class MenuOptions extends Menu {
     );
     const startingDate = await this.prototype.getString(
       "Introduce la fecha de inicio:",
-      "date"
+      ValidationType.Date
     );
     if (!startingDate) return;
     console.log(startingDate);
     const endingDate = await this.prototype.getString(
       "Introduce la fecha de fin:",
-      "date"
+      ValidationType.Date
     );
     if (!endingDate) return;
     console.log(endingDate);

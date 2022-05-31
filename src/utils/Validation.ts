@@ -30,7 +30,11 @@ export class Validation {
   }
 }
 
-export type ValidationType = "email" | "password" | "date";
+export enum ValidationType {
+  Email = "email",
+  Password = "password",
+  Date = "date",
+}
 
 interface ValidationTypes {
   [key: string]: RegExp;

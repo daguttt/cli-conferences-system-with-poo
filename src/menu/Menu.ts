@@ -119,6 +119,6 @@ export class Menu {
   async getEmail(
     printMessage: string = "Introduce tu correo electrónico:"
   ): Promise<string> {
-    return this.getString(printMessage, "email");
+    return this.getString(printMessage, ValidationType.Email);
   }
 }
