@@ -144,7 +144,7 @@ export class MenuOptions extends Menu {
     if (!Store.conferences.length) return console.log("No hay conferencias");
     this.showConferences();
     const conferenceIndex = await MenuOptions.prototype.getInt(
-      "Elige la conferencia a la que deseas asistir: (ID)"
+      "Elige la conferencia de la que deseas conocer los participantes: (ID)"
     );
     if (!Store.conferenceExists(conferenceIndex)) {
       console.log("Conferencia no encontrada");
