@@ -170,6 +170,50 @@ export class MenuOptions extends Menu {
       );
     });
   }
+  public static async showConferencesByMentor(): Promise<void> {
+    if (!Store.conferences.length) return console.log("No hay conferencias");
+    // Ask for mentor email
+    const mentorEmail = await this.prototype.getEmail(
+      "Introduce el correo electrónico del mentor"
+    );
+    if (!mentorEmail) return; // Invalid Format
+    if (!Store.mentorExists(mentorEmail))
+      return console.log(
+        `El mentor con el correo: "${mentorEmail}" no está registrado`
+      );
+    // Get mentor
+    const mentor = Store.getMentorThatAlreadyExists(mentorEmail);
+    // Show mentor conferences if exist
+    console.log();
+    console.log(
+      `#################### "${Utils.titleCase(
+        mentor.name
+      )}" #####################`
+    );
+    if (!mentor.conferences.length) {
+      console.log();
+      console.log("Este mentor no ha programado conferencias");
+      console.log();
+      console.log("################# ################# #################");
+      return;
+    }
+    console.log();
+    console.log(`-> Número de Conferencias: ${mentor.conferences.length}`);
+    [...mentor.conferences]
+      .sort((a, b) => a.endingDate.getTime() - b.startingDate.getTime())
+      .forEach(({ id, name, startingDate, endingDate, participants }) => {
+        console.log();
+        console.log(`ID: ${id}`);
+        console.log(`Título evento: "${name}"`);
+        console.log(`Fecha de inicio | Fecha de finalizacion`);
+        console.log(
+          `${startingDate.toLocaleDateString()}  ----------> ${endingDate.toLocaleDateString()}`
+        );
+        console.log(`Número de participantes: ${participants.length}`);
+        console.log();
+      });
+    console.log("################# ################# #################");
+  }
   public static probarUI() {
     console.log();
     console.log("---------------------- TESTS -------------------------");
