@@ -53,13 +53,19 @@ export class MenuOptions extends Menu {
       ValidationType.Password
     );
     if (!mentorPassword) return;
-    const { error: errorOfAuth, message: authMessage } = Mentor.authMentor(
-      mentorEmail,
-      mentorPassword
-    );
-    console.log(authMessage);
-    if (errorOfAuth) return;
+    if (!Store.mentorExists(mentorEmail)) {
+      console.log(
+        "Según las credenciales ingresadas el mentor no está registrado en el sistema"
+      );
+      return;
+    }
     const mentor: Mentor = Store.getMentorThatAlreadyExists(mentorEmail);
+    const { error: errorOfAuth, message: authMessage } =
+      mentor.authMentor(mentorPassword);
+    console.log();
+    console.log(authMessage);
+    console.log();
+    if (errorOfAuth) return;
     const conferenceTitle = await this.prototype.getString(
       "Introduce el título de tu conferencia:"
     );

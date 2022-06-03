@@ -46,17 +46,9 @@ export class Mentor extends Person {
     );
     return isOnAvailableDate;
   }
-  public static authMentor(email: string, password: string): Response {
+  public authMentor(password: string): Response {
     const response = new Response();
-    const mentorExists: boolean = Store.mentorExists(email);
-    if (!mentorExists) {
-      response.error = true;
-      response.message =
-        "Según las credenciales ingresadas el mentor no está registrado en el sistema";
-      return response;
-    }
-    const mentor = Store.getMentorThatAlreadyExists(email);
-    if (!(mentor.password === password)) {
+    if (!(this.password === password)) {
       response.error = true;
       response.message = "Contraseña incorrecta";
       return response;
