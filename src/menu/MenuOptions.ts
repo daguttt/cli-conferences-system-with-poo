@@ -64,12 +64,12 @@ export class MenuOptions extends Menu {
       "Introduce el título de tu conferencia:"
     );
     const startingDate = await this.prototype.getString(
-      "Introduce la fecha de inicio:",
+      "Introduce la fecha de inicio (formato: MM-DD-YYYY):",
       ValidationType.Date
     );
     if (!startingDate) return;
     const endingDate = await this.prototype.getString(
-      "Introduce la fecha de fin:",
+      "Introduce la fecha de fin (formato: MM-DD-YYYY):",
       ValidationType.Date
     );
     if (!endingDate) return;
