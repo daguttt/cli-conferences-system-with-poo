@@ -1,7 +1,7 @@
 import { Conference } from "./Conference";
 import { Person } from "./shared/person";
 import { Response } from "./Response";
-import Store from "./Store";
+import { Store } from "./Store";
 import { Utils } from "./utils/Utils";
 export class Mentor extends Person {
   public conferences: Conference[];
@@ -9,6 +9,7 @@ export class Mentor extends Person {
     super(name, email, password);
     this.conferences = [];
   }
+
   public verifyMentorAvailability(
     startingDateEventToCreate: Date,
     endingDateEventToCreate: Date
@@ -47,3 +48,23 @@ export class Mentor extends Person {
     return isOnAvailableDate;
   }
 }
+
+export class MentorsStore extends Store<Mentor> {
+  constructor(public data: Mentor[]) {
+    super(data);
+  }
+  public mentorExists(email: string): boolean {
+    return this.data.findIndex((mentor) => mentor.email === email) !== -1;
+  }
+  public getMentorThatAlreadyExists(email: string): Mentor {
+    return this.data.find((mentor) => mentor.email === email)!;
+  }
+  public storeOne(mentor: Mentor): Response {
+    const response: Response = new Response();
+    this.data.push(mentor);
+    response.error = false;
+    response.message = "Mentor agregado correctamente";
+    return response;
+  }
+}
+export default new MentorsStore([]);

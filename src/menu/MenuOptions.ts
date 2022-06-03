@@ -1,9 +1,9 @@
-import Store from "../Store";
 import { Menu } from "./Menu";
-import { Mentor } from "../Mentor";
-import { Student } from "../Student";
+import mentorsStore, { Mentor } from "../Mentor";
+import studentsStore, { Student } from "../Student";
 import { Utils } from "../utils/Utils";
 import { ValidationType } from "../utils/Validation";
+import conferencesStore, { Conference } from "../Conference";
 
 export class MenuOptions extends Menu {
   constructor() {
@@ -18,12 +18,12 @@ export class MenuOptions extends Menu {
       ValidationType.Password
     );
     if (!password) return;
-    if (Store.mentorExists(email)) {
+    if (mentorsStore.mentorExists(email)) {
       console.log("El mentor ya está registrado");
       return;
     }
     const mentor = new Mentor(name, email, password);
-    const { message } = Store.storeMentor(mentor);
+    const { message } = mentorsStore.storeOne(mentor);
     console.log("\n");
     console.log(message);
   }
@@ -36,12 +36,12 @@ export class MenuOptions extends Menu {
       ValidationType.Password
     );
     if (!password) return;
-    if (Store.studentExists(email)) {
+    if (studentsStore.studentExists(email)) {
       console.log("El estudiante ya está registrado");
       return;
     }
     const student = new Student(name, email, password);
-    const { message } = Store.storeStudent(student);
+    const { message } = studentsStore.storeOne(student);
     console.log("\n");
     console.log(message);
   }
@@ -53,13 +53,13 @@ export class MenuOptions extends Menu {
       ValidationType.Password
     );
     if (!mentorPassword) return;
-    if (!Store.mentorExists(mentorEmail)) {
+    if (!mentorsStore.mentorExists(mentorEmail)) {
       console.log(
         "Según las credenciales ingresadas el mentor no está registrado en el sistema"
       );
       return;
     }
-    const mentor: Mentor = Store.getMentorThatAlreadyExists(mentorEmail);
+    const mentor: Mentor = mentorsStore.getMentorThatAlreadyExists(mentorEmail);
     const { error: errorOfAuth, message: authMessage } =
       mentor.auth(mentorPassword);
     console.log();
@@ -89,18 +89,24 @@ export class MenuOptions extends Menu {
       );
       return;
     }
-    const { message: storeMessage } = Store.addConference(
-      mentor,
+    const conference = new Conference(
+      conferencesStore.autoIncrementIdForConferences,
       conferenceTitle,
+      mentor,
+      [],
       new Date(startingDate),
       new Date(endingDate)
+    );
+    const { message: storeMessage } = conferencesStore.storeOne<Mentor>(
+      conference,
+      mentor
     );
     console.log(storeMessage);
   }
   public static showStudents(): void {
-    if (Store.students.length) {
+    if (studentsStore.data.length) {
       console.log("################ LISTA DE ESTUDIANTES ################");
-      Store.students?.forEach((student) => {
+      studentsStore.data?.forEach((student) => {
         console.log(`
             Nombre: ${Utils.titleCase(student.name)}
             Email: ${student.email}
@@ -110,9 +116,9 @@ export class MenuOptions extends Menu {
     } else console.log("No hay estudiantes registrados");
   }
   public static showMentors(): void {
-    if (Store.mentors.length) {
+    if (mentorsStore.data.length) {
       console.log("################ LISTA DE MENTORES ##################");
-      Store.mentors?.forEach((mentor) => {
+      mentorsStore.data?.forEach((mentor) => {
         console.log(`
             Nombre: ${Utils.titleCase(mentor.name)}
             Email: ${mentor.email}
@@ -122,9 +128,9 @@ export class MenuOptions extends Menu {
     } else console.log("No hay mentores registrados");
   }
   public static showConferences(): void {
-    if (Store.conferences.length) {
+    if (conferencesStore.data.length) {
       console.log("############### LISTA DE CONFERENCIAS ################");
-      [...Store.conferences]
+      [...conferencesStore.data]
         .sort((a, b) => a.endingDate.getTime() - b.startingDate.getTime())
         .forEach(
           ({ id, name, mentor, startingDate, endingDate, participants }) => {
@@ -146,20 +152,22 @@ export class MenuOptions extends Menu {
   public static async registerStudentInConference(): Promise<void> {
     const studentEmail = await this.prototype.getEmail();
     if (!studentEmail) return;
-    if (!Store.studentExists(studentEmail)) {
+    if (!studentsStore.studentExists(studentEmail)) {
       console.log("No estás registrado en el sistema");
       return;
     }
     MenuOptions.showConferences();
-    const student: Student = Store.getStudentThatAlreadyExists(studentEmail);
+    const student: Student =
+      studentsStore.getStudentThatAlreadyExists(studentEmail);
     const conferenceIndex = await this.prototype.getInt(
       "Elige la conferencia a la que deseas asistir: (ID)"
     );
-    if (!Store.conferenceExists(conferenceIndex)) {
+    if (!conferencesStore.conferenceExists(conferenceIndex)) {
       console.log("Conferencia no encontrada");
       return;
     }
-    const conference = Store.getConferenceThatAlreadyExists(conferenceIndex);
+    const conference =
+      conferencesStore.getConferenceThatAlreadyExists(conferenceIndex);
     const isConferenceAvailable = conference.verifyConferenceAvailability();
     if (!isConferenceAvailable) {
       console.log("La conferencia no tiene más cupos disponibles");
@@ -178,16 +186,18 @@ export class MenuOptions extends Menu {
     console.log("\n");
   }
   public static async showParticipantsByConference(): Promise<void> {
-    if (!Store.conferences.length) return console.log("No hay conferencias");
+    if (!conferencesStore.data.length)
+      return console.log("No hay conferencias");
     this.showConferences();
     const conferenceIndex = await MenuOptions.prototype.getInt(
       "Elige la conferencia de la que deseas conocer los participantes: (ID)"
     );
-    if (!Store.conferenceExists(conferenceIndex)) {
+    if (!conferencesStore.conferenceExists(conferenceIndex)) {
       console.log("Conferencia no encontrada");
       return;
     }
-    const conference = Store.getConferenceThatAlreadyExists(conferenceIndex);
+    const conference =
+      conferencesStore.getConferenceThatAlreadyExists(conferenceIndex);
     console.log(`################ "${conference.name}" ################`);
     console.log();
     if (!conference.participants.length) {
@@ -208,18 +218,19 @@ export class MenuOptions extends Menu {
     });
   }
   public static async showConferencesByMentor(): Promise<void> {
-    if (!Store.conferences.length) return console.log("No hay conferencias");
+    if (!conferencesStore.data.length)
+      return console.log("No hay conferencias");
     // Ask for mentor email
     const mentorEmail = await this.prototype.getEmail(
       "Introduce el correo electrónico del mentor"
     );
     if (!mentorEmail) return; // Invalid Format
-    if (!Store.mentorExists(mentorEmail))
+    if (!mentorsStore.mentorExists(mentorEmail))
       return console.log(
         `El mentor con el correo: "${mentorEmail}" no está registrado`
       );
     // Get mentor
-    const mentor = Store.getMentorThatAlreadyExists(mentorEmail);
+    const mentor = mentorsStore.getMentorThatAlreadyExists(mentorEmail);
     // Show mentor conferences if exist
     console.log();
     console.log(
