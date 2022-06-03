@@ -2,6 +2,7 @@ import { Conference } from "./Conference";
 import { Person } from "./shared/person";
 import { Response } from "./Response";
 import Store from "./Store";
+import { Utils } from "./utils/Utils";
 export class Mentor extends Person {
   public conferences: Conference[];
   constructor(name: string, email: string, password: string) {
@@ -14,8 +15,8 @@ export class Mentor extends Person {
   ): boolean {
     if (!this.conferences.length) return true;
 
-    const currentDate: number = Date.parse(Date());
-    const tomorrow: number = currentDate + 86400 * 1000;
+    const currentDate: Date = Utils.getCurrentDate();
+    const tomorrow: number = currentDate.getTime() + 86400 * 1000;
     const isAfterCurrentDate: boolean =
       tomorrow <= startingDateEventToCreate.getTime();
 
