@@ -7,4 +7,7 @@ export class Person {
   get password() {
     return this._password;
   }
+  set password(newPassword: string) {
+    this._password = newPassword;
+  }
 }
