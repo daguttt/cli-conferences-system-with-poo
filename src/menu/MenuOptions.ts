@@ -61,7 +61,7 @@ export class MenuOptions extends Menu {
     }
     const mentor: Mentor = Store.getMentorThatAlreadyExists(mentorEmail);
     const { error: errorOfAuth, message: authMessage } =
-      mentor.authMentor(mentorPassword);
+      mentor.auth(mentorPassword);
     console.log();
     console.log(authMessage);
     console.log();

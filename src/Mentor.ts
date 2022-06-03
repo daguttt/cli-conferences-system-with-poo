@@ -46,15 +46,4 @@ export class Mentor extends Person {
     );
     return isOnAvailableDate;
   }
-  public authMentor(password: string): Response {
-    const response = new Response();
-    if (!(this.password === password)) {
-      response.error = true;
-      response.message = "Contraseña incorrecta";
-      return response;
-    }
-    response.error = false;
-    response.message = "Mentor autenticado con éxito";
-    return response;
-  }
 }
