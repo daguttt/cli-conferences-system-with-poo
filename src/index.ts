@@ -58,14 +58,6 @@ import { MenuOptions } from "./menu/MenuOptions";
         await MenuOptions.showConferencesByMentor();
         break;
 
-      case 10:
-        console.log("Falta por implementar la opción: : ", key);
-        break;
-
-      case 11:
-        MenuOptions.probarUI();
-        break;
-
       default:
         console.log("Debe elegir una opción valida");
         break;
