@@ -21,17 +21,11 @@ class Store {
     return this.students.find((student) => student.email === email)!;
   }
   // TODO: Use Generics to add a single method `setData` (I don'k know yet how to do it 😕)
-  public storeStudent(name: string, email: string, password: string): Response {
+  public storeStudent(student: Student): Response {
     const response: Response = new Response();
-    if (!this.studentExists(email)) {
-      const student = new Student(name, email, password);
-      this.students.push(student);
-      response.error = false;
-      response.message = "Estudiante agregado correctamente";
-    } else {
-      response.error = true;
-      response.message = "El estudiante ya está registrado";
-    }
+    this.students.push(student);
+    response.error = false;
+    response.message = "Estudiante agregado correctamente";
     return response;
   }
   // -*************************************************************************-
@@ -43,17 +37,11 @@ class Store {
   public getMentorThatAlreadyExists(email: string): Mentor {
     return this.mentors.find((mentor) => mentor.email === email)!;
   }
-  public storeMentor(name: string, email: string, password: string): Response {
+  public storeMentor(mentor: Mentor): Response {
     const response: Response = new Response();
-    if (!this.mentorExists(email)) {
-      const mentor = new Mentor(name, email, password);
-      this.mentors.push(mentor);
-      response.error = false;
-      response.message = "Mentor agregado correctamente";
-    } else {
-      response.error = true;
-      response.message = "El mentor ya está registrado";
-    }
+    this.mentors.push(mentor);
+    response.error = false;
+    response.message = "Mentor agregado correctamente";
     return response;
   }
 
@@ -75,16 +63,6 @@ class Store {
     endingDate: Date
   ): Response {
     const response = new Response();
-    const isMentorAvailable = mentor.verifyMentorAvailability(
-      startingDate,
-      endingDate
-    );
-    if (!isMentorAvailable) {
-      response.error = true;
-      response.message =
-        "El mentor tiene ocupada esa fecha. Intenta de nuevo con otro fecha";
-      return response;
-    }
     const conference = new Conference(
       this.autoIncrementIdForConferences,
       name,
@@ -98,28 +76,6 @@ class Store {
     this.autoIncrementIdForConferences++;
     response.error = false;
     response.message = "SUCCESS: Conferencia agregada correctamente";
-    return response;
-  }
-  public registerStudentInConference(
-    student: Student,
-    conference: Conference
-  ): Response {
-    const response = new Response();
-    const isConferenceAvailable = conference.verifyConferenceAvailability();
-    if (!isConferenceAvailable) {
-      response.error = true;
-      response.message = "La conferencia no tiene más cupos disponibles";
-    }
-    const isStudentRegisteredNow =
-      conference.checkStudentInsideParticipants(student);
-    if (isStudentRegisteredNow) {
-      response.error = true;
-      response.message = "Ya te encuentras en la lista de participantes";
-      return response;
-    }
-    conference.participants.push(student);
-    response.error = false;
-    response.message = `Has sido añadido a la lista de participantes de "${conference.name}" correctamente`;
     return response;
   }
 }

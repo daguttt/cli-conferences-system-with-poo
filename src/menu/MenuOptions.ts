@@ -18,7 +18,12 @@ export class MenuOptions extends Menu {
       ValidationType.Password
     );
     if (!password) return;
-    const { message } = Store.storeMentor(name, email, password);
+    if (Store.mentorExists(email)) {
+      console.log("El mentor ya está registrado");
+      return;
+    }
+    const mentor = new Mentor(name, email, password);
+    const { message } = Store.storeMentor(mentor);
     console.log("\n");
     console.log(message);
   }
@@ -31,7 +36,12 @@ export class MenuOptions extends Menu {
       ValidationType.Password
     );
     if (!password) return;
-    const { message } = Store.storeStudent(name, email, password);
+    if (Store.studentExists(email)) {
+      console.log("El estudiante ya está registrado");
+      return;
+    }
+    const student = new Student(name, email, password);
+    const { message } = Store.storeStudent(student);
     console.log("\n");
     console.log(message);
   }
@@ -58,13 +68,21 @@ export class MenuOptions extends Menu {
       ValidationType.Date
     );
     if (!startingDate) return;
-    console.log(startingDate);
     const endingDate = await this.prototype.getString(
       "Introduce la fecha de fin:",
       ValidationType.Date
     );
     if (!endingDate) return;
-    console.log(endingDate);
+    const isMentorAvailable = mentor.verifyMentorAvailability(
+      new Date(startingDate),
+      new Date(endingDate)
+    );
+    if (!isMentorAvailable) {
+      console.log(
+        "El mentor tiene ocupada esa fecha. Intenta de nuevo con otro fecha"
+      );
+      return;
+    }
     const { message: storeMessage } = Store.addConference(
       mentor,
       conferenceTitle,
@@ -128,7 +146,7 @@ export class MenuOptions extends Menu {
     }
     MenuOptions.showConferences();
     const student: Student = Store.getStudentThatAlreadyExists(studentEmail);
-    const conferenceIndex = await MenuOptions.prototype.getInt(
+    const conferenceIndex = await this.prototype.getInt(
       "Elige la conferencia a la que deseas asistir: (ID)"
     );
     if (!Store.conferenceExists(conferenceIndex)) {
@@ -136,9 +154,22 @@ export class MenuOptions extends Menu {
       return;
     }
     const conference = Store.getConferenceThatAlreadyExists(conferenceIndex);
-    const { message } = Store.registerStudentInConference(student, conference);
+    const isConferenceAvailable = conference.verifyConferenceAvailability();
+    if (!isConferenceAvailable) {
+      console.log("La conferencia no tiene más cupos disponibles");
+      return;
+    }
+    const isStudentRegisteredNow =
+      conference.checkStudentInsideParticipants(student);
+    if (isStudentRegisteredNow) {
+      console.log("Ya te encuentras en la lista de participantes");
+      return;
+    }
+    conference.participants.push(student);
+    console.log(
+      `Has sido añadido a la lista de participantes de "${conference.name}" correctamente`
+    );
     console.log("\n");
-    console.log(message);
   }
   public static async showParticipantsByConference(): Promise<void> {
     if (!Store.conferences.length) return console.log("No hay conferencias");
