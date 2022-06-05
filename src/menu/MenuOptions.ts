@@ -227,7 +227,8 @@ export class MenuOptions extends Menu {
         mentor.name
       )}" #####################`
     );
-    if (!mentor.conferences.length) {
+    const mentorConferences = Store.getMentorConferences(mentorEmail);
+    if (!mentorConferences.length) {
       console.log();
       console.log("Este mentor no ha programado conferencias");
       console.log();
@@ -235,8 +236,8 @@ export class MenuOptions extends Menu {
       return;
     }
     console.log();
-    console.log(`-> Número de Conferencias: ${mentor.conferences.length}`);
-    [...mentor.conferences]
+    console.log(`-> Número de Conferencias: ${mentorConferences.length}`);
+    [...mentorConferences]
       .sort((a, b) => a.endingDate.getTime() - b.startingDate.getTime())
       .forEach(({ id, name, startingDate, endingDate, participants }) => {
         console.log();

@@ -1,19 +1,17 @@
-import { Conference } from "./Conference";
 import { Person } from "./shared/person";
-import { Response } from "./Response";
 import Store from "./Store";
+import { Response } from "./Response";
 import { Utils } from "./utils/Utils";
 export class Mentor extends Person {
-  public conferences: Conference[];
   constructor(name: string, email: string, password: string) {
     super(name, email, password);
-    this.conferences = [];
   }
   public verifyMentorAvailability(
     startingDateEventToCreate: Date,
     endingDateEventToCreate: Date
   ): boolean {
-    if (!this.conferences.length) return true;
+    const mentorConferences = Store.getMentorConferences(this.email);
+    if (!mentorConferences.length) return true;
 
     const currentDate: Date = Utils.getCurrentDate();
     const tomorrow: number = currentDate.getTime() + 86400 * 1000;
@@ -22,7 +20,7 @@ export class Mentor extends Person {
 
     if (!isAfterCurrentDate) return false;
 
-    const sortedAscendingBusyDates: number[][] = this.conferences
+    const sortedAscendingBusyDates: number[][] = mentorConferences
       .map((conference) => [
         conference.startingDate.getTime(),
         conference.endingDate.getTime(),

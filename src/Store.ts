@@ -37,6 +37,11 @@ class Store {
   public getMentorThatAlreadyExists(email: string): Mentor {
     return this.mentors.find((mentor) => mentor.email === email)!;
   }
+  public getMentorConferences(mentorEmail: string): Conference[] {
+    return this.conferences.filter(
+      (conference) => conference.mentor.email === mentorEmail
+    );
+  }
   public storeMentor(mentor: Mentor): Response {
     const response: Response = new Response();
     this.mentors.push(mentor);
@@ -72,7 +77,6 @@ class Store {
       endingDate
     );
     this.conferences.push(conference);
-    mentor.conferences.push(conference);
     this.autoIncrementIdForConferences++;
     response.error = false;
     response.message = "SUCCESS: Conferencia agregada correctamente";
