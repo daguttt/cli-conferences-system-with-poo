@@ -54,6 +54,12 @@ export class Menu {
 
   private ask() {
     return new Promise<string>((resolve, reject) => {
+      console.log("Hi");
+      console.log("Hi");
+      console.log("Hi");
+      console.log("Hi");
+      console.log("Hi");
+      console.log("Hi");
       process.stdin.once("data", (chunk) => {
         let name = chunk.toString().trim();
         resolve(name);
