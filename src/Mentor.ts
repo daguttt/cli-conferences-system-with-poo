@@ -45,7 +45,6 @@ export class Mentor extends Person {
     return isOnAvailableDate;
   }
   public authMentor(password: string): Response {
-    console.log("Hi");
     const response = new Response();
     if (!(this.password === password)) {
       response.error = true;
